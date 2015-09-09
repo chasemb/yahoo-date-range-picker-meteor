@@ -1,14 +1,14 @@
 Package.describe({
   name: "chasemb:yahoo-date-range-picker",
   summary: "eternicode/bootstrap-datepicker modified to yahoo's gemini date-range picker",
-  version: "1.2.2",
+  version: "1.2.3",
   documentation: "README.md",
   git: 'https://github.com/chasemb/yahoo-date-range-picker-meteor'
 });
 
 var packages = [
   'fortawesome:fontawesome@4.4.0',
-  'mrt:moment@2.8.1'
+  'momentjs:moment@2.10.6'
 ];
 
 
