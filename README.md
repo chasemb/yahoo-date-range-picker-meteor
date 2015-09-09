@@ -16,6 +16,7 @@ Example
 ============
 Load datepicker template:
 	Ex.
+
 	Left Aligned
 		<div class="pull-left">
 				{{> daterangepicker}}
