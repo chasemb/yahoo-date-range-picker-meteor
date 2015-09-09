@@ -44,3 +44,5 @@ Todo
 
 1. Update moment deprecation warning.
 2. Set lifetime beginning date option
+3. Set default range option
+4. Mobile Optimize Layout
