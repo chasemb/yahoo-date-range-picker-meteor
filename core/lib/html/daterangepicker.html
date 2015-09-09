@@ -1,0 +1,24 @@
+<template name="daterangepicker">
+    <div id="date-dropdown" class="dropdown date-chooser">
+        <a class="dropdown-toggle-date-chooser hand noselect" data-toggle="dropdown">Display Date </a><span class="add-on" data-toggle="dropdown">&nbsp;&nbsp;<i class="fa fa-calendar"></i></span>
+        <div class="dropdown-menu {{align}} calendar-dropdown">
+            <div class="calendars">
+                <div id="first-cal" class="cals" data-date="01-01-2012" data-date-format="mm-dd-yyyy">
+                </div>
+                <div id="second-cal" class="cals" data-date="01-01-2012" data-date-format="mm-dd-yyyy" todayHighlight="true"></div>
+            </div>
+            <div class="preset-links">
+                <ul>
+                  <a class="today"><li class="{{activeDate 'today'}} date-links">Today</li></a>
+                  <a class="yesterday"><li class="{{activeDate 'yesterday'}} date-links">Yesterday</li></a>
+                  <a class="last-7"><li class="{{activeDate 'last-7'}} date-links">Last 7 Days</li></a>
+                  <a class="last-14"><li class="{{activeDate 'last-14'}} date-links">Last 14 Days</li></a>
+                  <a class="last-30"><li class="{{activeDate 'last-30'}} date-links">Last 30 Days</li></a>
+                  <a class="this-month"><li class="{{activeDate 'this-month'}} date-links">This Month</li></a>
+                  <a class="this-year"><li class="{{activeDate 'this-year'}} date-links">This Year</li></a>
+                  <a class="lifetime"><li class="{{activeDate 'lifetime'}} date-links">Lifetime</li></a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
