@@ -8,6 +8,8 @@ This package is MIT Licensed. Do whatever you like with it but any responsibilit
 
 All rights to eternicode/bootstrap-datepicker are with the original author
 
+![](http://i.imgur.com/Dodz659.png)
+
 Dependencies
 ============
 Bootstrap 3
