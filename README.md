@@ -42,4 +42,5 @@ The Datepicker returns a session variable named 'date' with an object containing
 Todo
 ============
 
-Update moment deprecation warning.
+1. Update moment deprecation warning.
+2. Set lifetime beginning date option
