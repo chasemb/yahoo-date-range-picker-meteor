@@ -41,6 +41,7 @@ Template.daterangepicker.rendered = function() {
             var active = 0;
             var restrict = 0;
             var set = 0;
+
             var startDateMonth = new moment($('#first-cal').datepicker("getDate")).format('YYYYMM');
             var endDateMonth = new moment($('#second-cal').datepicker("getDate")).format('YYYYMM');
 
@@ -114,11 +115,11 @@ Template.daterangepicker.rendered = function() {
             var endDateCal = new moment(dateObj.endDate).format('MM-DD-YYYY');
 
         } else {
-            var startDate = new moment().subtract('days', 7).format('MMM D, YYYY');
+            var startDate = new moment().subtract(7, 'days').format('MMM D, YYYY');
             var endDate = new moment().format('MMM D, YYYY');
-            var startDateBottom = new moment().subtract('days', 7).format('MMMM D, YYYY');
+            var startDateBottom = new moment().subtract(7, 'days').format('MMMM D, YYYY');
             var endDateBottom = new moment().format('MMMM D, YYYY');
-            var startDateCal = new moment().subtract('days', 7).format('MM-DD-YYYY');
+            var startDateCal = new moment().subtract(7, 'days').format('MM-DD-YYYY');
             var endDateCal = new moment().format('MM-DD-YYYY');
 
             Session.set('date', {
@@ -164,7 +165,7 @@ Template.daterangepicker.rendered = function() {
 
     // Pre-set Dates
     $('.lifetime').click(function() {
-        var startDate = new moment('01-01-2000', 'MM-DD-YYYY').format('MM/DD/YYYY');
+        var startDate = new moment('2000 01 01', 'YYYY MM DD').format('MM/DD/YYYY');
         var endDate = new moment().format('MM/DD/YYYY');
         Session.set('date', {
             startDate: startDate,
@@ -177,8 +178,8 @@ Template.daterangepicker.rendered = function() {
         dateOnload();
     });
     $('.yesterday').click(function() {
-        var startDate = new moment().subtract('days', 1).format('MM/DD/YYYY');
-        var endDate = new moment().subtract('days', 1).format('MM/DD/YYYY');
+        var startDate = new moment().subtract(1, 'days').format('MM/DD/YYYY');
+        var endDate = new moment().subtract(1, 'days').format('MM/DD/YYYY');
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
@@ -189,7 +190,7 @@ Template.daterangepicker.rendered = function() {
         dateOnload();
     });
     $('.last-14').click(function() {
-        var startDate = new moment().subtract('days', 14).format('MM/DD/YYYY');
+        var startDate = new moment().subtract(14, 'days').format('MM/DD/YYYY');
         var endDate = new moment().format('MM/DD/YYYY');
         Session.set('date', {
             startDate: startDate,
@@ -225,7 +226,7 @@ Template.daterangepicker.rendered = function() {
         dateOnload();
     });
     $('.last-7').click(function() {
-        var startDate = new moment().subtract('days', 7).format('MM/DD/YYYY');
+        var startDate = new moment().subtract(7, 'days').format('MM/DD/YYYY');
         var endDate = new moment().format('MM/DD/YYYY');
         Session.set('date', {
             startDate: startDate,
@@ -237,7 +238,7 @@ Template.daterangepicker.rendered = function() {
         dateOnload();
     });
     $('.last-30').click(function() {
-        var startDate = new moment().subtract('days', 30).format('MM/DD/YYYY');
+        var startDate = new moment().subtract(30, 'days').format('MM/DD/YYYY');
         var endDate = new moment().format('MM/DD/YYYY');
         Session.set('date', {
             startDate: startDate,

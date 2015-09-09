@@ -2,7 +2,8 @@ Package.describe({
   name: "chasemb:yahoo-date-range-picker",
   summary: "eternicode/bootstrap-datepicker modified to yahoo's gemini date-range picker",
   version: "1.1.8",
-  documentation: "README.md"
+  documentation: "README.md",
+  git: 'https://github.com/chasemb/yahoo-date-range-picker-meteor'
 });
 
 var packages = [
