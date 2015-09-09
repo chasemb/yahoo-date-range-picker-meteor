@@ -35,5 +35,7 @@ The Datepicker returns a session variable named 'date' with an object containing
 		Session.get('date') ---> {startDate: "08/04/2015", endDate: "09/01/2015"}
 
 
+Todo
+============
 
-
+Update moment deprecation warning.
