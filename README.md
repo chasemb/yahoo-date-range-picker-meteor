@@ -31,6 +31,7 @@ Load datepicker template:
 
 The Datepicker returns a session variable named 'date' with an object containing 'startDate' and 'endDate';
 	Ex.
+
 		Session.get('date') ---> {startDate: "08/04/2015", endDate: "09/01/2015"}
 
 
