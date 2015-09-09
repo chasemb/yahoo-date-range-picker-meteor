@@ -10,6 +10,10 @@ All rights to eternicode/bootstrap-datepicker are with the original author
 
 ![](http://i.imgur.com/Dodz659.png)
 
+Demo
+============
+<a href="http://yahoo_date_range_picker.meteor.com/" target="_blank">Demo Here</a>
+
 Dependencies
 ============
 Bootstrap 3
