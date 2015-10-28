@@ -42,7 +42,7 @@ The Datepicker returns a session variable named 'date' with an object containing
 Todo
 ============
 
-1. Update moment deprecation warning.
-2. Set lifetime beginning date option
-3. Set default range option
-4. Mobile Optimize Layout
+1. Set lifetime beginning date option
+2. Set default range option
+3. Mobile Optimize Layout
+4. Timezone fix

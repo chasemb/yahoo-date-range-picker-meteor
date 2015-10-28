@@ -5,19 +5,17 @@ Handlebars.registerHelper("activeDate", function(date) {
 Template.daterangepicker.rendered = function() {
     // initiate calendars
     $('#first-cal').datepicker({
-        endDate: new moment().format('MM-DD-YYYY'),
+        endDate: moment().toDate(),
         todayHighlight: true
     }).on('changeDate', function(ev) {
-        updateLowerDate();
         restrictDates();
     }).click(function(e) {
         e.stopPropagation();
     });
     $('#second-cal').datepicker({
-        endDate: new moment().format('MM-DD-YYYY'),
+        endDate: moment().toDate(),
         todayHighlight: true
     }).on('changeDate', function(ev) {
-        updateLowerDate();
         restrictDates();
     }).click(function(e) {
         e.stopPropagation();
@@ -42,8 +40,8 @@ Template.daterangepicker.rendered = function() {
             var restrict = 0;
             var set = 0;
 
-            var startDateMonth = new moment($('#first-cal').datepicker("getDate")).format('YYYYMM');
-            var endDateMonth = new moment($('#second-cal').datepicker("getDate")).format('YYYYMM');
+            var startDateMonth = moment($('#first-cal').datepicker("getDate")).format('YYYYMM');
+            var endDateMonth = moment($('#second-cal').datepicker("getDate")).format('YYYYMM');
 
             for (var i = 0, cell; cell = tableOne.getElementsByTagName('td')[i]; i++) {
 
@@ -100,6 +98,7 @@ Template.daterangepicker.rendered = function() {
                 }
             }
         };
+
         highlightDates();
     };
 
@@ -107,20 +106,12 @@ Template.daterangepicker.rendered = function() {
         // Check for which dates are set or go to default
         if (Session.get('date')) {
             var dateObj = Session.get('date');
-            var startDate = new moment(dateObj.startDate).format('MMM D, YYYY');
-            var endDate = new moment(dateObj.endDate).format('MMM D, YYYY');
-            var startDateBottom = new moment(dateObj.startDate).format('MMMM D, YYYY');
-            var endDateBottom = new moment(dateObj.endDate).format('MMMM D, YYYY');
-            var startDateCal = new moment(dateObj.startDate).format('MM-DD-YYYY');
-            var endDateCal = new moment(dateObj.endDate).format('MM-DD-YYYY');
+            var startDate = dateObj.startDate;
+            var endDate = dateObj.endDate;
 
         } else {
-            var startDate = new moment().subtract(7, 'days').format('MMM D, YYYY');
-            var endDate = new moment().format('MMM D, YYYY');
-            var startDateBottom = new moment().subtract(7, 'days').format('MMMM D, YYYY');
-            var endDateBottom = new moment().format('MMMM D, YYYY');
-            var startDateCal = new moment().subtract(7, 'days').format('MM-DD-YYYY');
-            var endDateCal = new moment().format('MM-DD-YYYY');
+            var startDate = moment().subtract(7, 'days').toDate();
+            var endDate = moment().toDate();
 
             Session.set('date', {
                 startDate: startDate,
@@ -128,26 +119,25 @@ Template.daterangepicker.rendered = function() {
             });
         }
 
-        $('#first-cal').datepicker('update', startDateCal);
-        $('#second-cal').datepicker('update', endDateCal);
-        $('.dropdown-toggle-date-chooser').text(startDate + ' - ' + endDate);
-        $('.calendar-bottom .left p.selected-dates').text(startDateBottom + ' - ' + endDateBottom);
+        $('#first-cal').datepicker('update', moment(startDate).format('MM-DD-YYYY'));
+        $('#second-cal').datepicker('update', moment(endDate).format('MM-DD-YYYY'));
+        $('.dropdown-toggle-date-chooser').text(moment(startDate).format('MMM D, YYYY') + ' - ' + moment(endDate).format('MMM D, YYYY'));
+
 
         restrictDates();
     };
 
+    var changeDate = function(startDate, endDate) {
+        //make sure isn't called twice hack
+        if ((new Date() - Session.get('lastUpdate')) < 500) {
+            return
+        }
 
+        if (!startDate && !endDate) {
+            startDate = moment($('#first-cal').datepicker("getDate")).toDate();
+            endDate = moment($('#second-cal').datepicker("getDate")).toDate();
+        };
 
-    var updateLowerDate = function() {
-        var startDate = new moment($('#first-cal').datepicker("getDate")).format('MMMM D, YYYY');
-        var endDate = new moment($('#second-cal').datepicker("getDate")).format('MMMM D, YYYY');
-        $('.calendar-bottom .left p.selected-dates').text(startDate + ' - ' + endDate);
-        restrictDates();
-    };
-
-    var changeDate = function() {
-        var startDate = new moment($('#first-cal').datepicker("getDate")).format('MM/DD/YYYY');
-        var endDate = new moment($('#second-cal').datepicker("getDate")).format('MM/DD/YYYY');
         $('#first-cal').datepicker({
             endDate: endDate
         });
@@ -155,113 +145,121 @@ Template.daterangepicker.rendered = function() {
             startDate: startDate,
             endDate: endDate
         };
-        if (Session.get('date').startDate !== date.startDate || Session.get('date').endDate !== date.endDate) {
-          //active date to null
-          Session.set('activeDate', null);
+
+        var start = moment(startDate).format('YYYYMMDD');
+        var end = moment(endDate).format('YYYYMMDD');
+        var sessionStart = moment(Session.get('date').startDate).format('YYYYMMDD');
+        var sessionEnd = moment(Session.get('date').endDate).format('YYYYMMDD');
+
+        if (start !== sessionStart || end !== sessionEnd) {
+            Session.set('activeDate', null);
         };
+
+        Session.set('lastUpdate', new Date());
         Session.set('date', date);
         dateOnload();
+
     };
 
     // Pre-set Dates
     $('.lifetime').click(function() {
-        var startDate = new moment('2000 01 01', 'YYYY MM DD').format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment('2000 01 01', 'YYYY MM DD').toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'lifetime');
-        }, 10);
 
-        dateOnload();
+        Session.set('activeDate', 'lifetime');
+
+
+        changeDate(startDate, endDate);
     });
     $('.yesterday').click(function() {
-        var startDate = new moment().subtract(1, 'days').format('MM/DD/YYYY');
-        var endDate = new moment().subtract(1, 'days').format('MM/DD/YYYY');
+        var startDate = moment().subtract(1, 'days').toDate();
+        var endDate = moment().subtract(1, 'days').toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'yesterday');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'yesterday');
+
+        changeDate(startDate, endDate);
     });
     $('.last-14').click(function() {
-        var startDate = new moment().subtract(14, 'days').format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment().subtract(14, 'days').toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'last-14');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'last-14');
+
+        changeDate(startDate, endDate);
     });
     $('.this-month').click(function() {
-        var startDate = new moment(1, "DD").format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment(1, "DD").toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'this-month');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'this-month');
+
+        changeDate(startDate, endDate);
     });
     $('.today').click(function() {
-        var startDate = new moment().format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment().toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'today');
-        }, 10);
-        dateOnload();
+
+
+        Session.set('activeDate', 'today');
+
+        changeDate(startDate, endDate);
     });
     $('.last-7').click(function() {
-        var startDate = new moment().subtract(7, 'days').format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment().subtract(7, 'days').toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'last-7');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'last-7');
+
+        changeDate(startDate, endDate);
     });
     $('.last-30').click(function() {
-        var startDate = new moment().subtract(30, 'days').format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment().subtract(30, 'days').toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'last-30');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'last-30');
+
+        changeDate(startDate, endDate);
     });
     $('.this-year').click(function() {
-        var startDate = new moment(1, "MM").format('MM/DD/YYYY');
-        var endDate = new moment().format('MM/DD/YYYY');
+        var startDate = moment(1, "MM").toDate();
+        var endDate = moment().toDate();
         Session.set('date', {
             startDate: startDate,
             endDate: endDate
         });
-        setTimeout(function() {
-            Session.set('activeDate', 'this-year');
-        }, 10);
-        dateOnload();
+
+        Session.set('activeDate', 'this-year');
+        changeDate(startDate, endDate);
     });
 
-    // Initiate dates onload
+    // // Initiate dates onload
     dateOnload();
 };
